@@ -1,0 +1,32 @@
+{
+  "title": "Smoke Test Dataset - MC",
+  "description": "This synthetic dataset presents a multiclass classification problem based on two types of features and a target with three classes. Each sample in the dataset has a unique identifier, a set of two features (color, number), and a target class label.",
+  "modelCategory": "multiclass_classification",
+  "schemaVersion": 1.0,
+  "inputDataFormat": "CSV",
+  "id": {
+    "name": "id",
+    "description": "Unique identifier for each sample in the dataset."
+  },
+  "target": {
+    "name": "target",
+    "description": "Target class: one of {0, 1, 2}",
+    "classes": [0, 1, 2]
+  },
+  "features": [
+    {
+      "name": "color",
+      "description": "A categorical feature, with three possible values: Red, Green, and Blue",
+      "dataType": "CATEGORICAL",
+      "categories": ["Blue", "Green", "Red"],
+      "nullable": true
+    },
+    {
+      "name": "number",
+      "description": "Values drawn from a uniform distribution between 1 and 100 inclusive",
+      "dataType": "NUMERIC",
+      "example": 53.0,
+      "nullable": true
+    }
+  ]
+}

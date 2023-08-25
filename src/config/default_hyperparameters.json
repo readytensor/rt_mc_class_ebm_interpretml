@@ -1,0 +1,4 @@
+{
+  "min_samples_split": 2,
+  "learning_rate": 1e-2
+}

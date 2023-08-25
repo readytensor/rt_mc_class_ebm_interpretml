@@ -1,0 +1,16 @@
+version: "3"
+services:
+  algo_app:
+    container_name: myc
+    build: .
+    volumes:
+      - ./model_inputs_outputs:/opt/model_inputs_outputs
+    ports:
+      - 8080:8080
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    command: train # keep the container running - `standby` defined in entry_point.sh

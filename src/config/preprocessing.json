@@ -1,0 +1,28 @@
+{
+  "numeric_transformers": {
+    "missing_indicator": {},
+    "mean_median_imputer": { "imputation_method": "mean" },
+    "standard_scaler": {},
+    "outlier_clipper": { "min_val": -4.0, "max_val": 4.0 }
+  },
+  "categorical_transformers": {
+    "cat_most_frequent_imputer": { "threshold": 0.1 },
+    "missing_tag_imputer": {
+      "imputation_method": "missing",
+      "fill_value": "missing"
+    },
+    "rare_label_encoder": {
+      "tol": 0.03,
+      "n_categories": 1,
+      "replace_with": "__rare__"
+    },
+    "one_hot_encoder": { "handle_unknown": "ignore" }
+  },
+  "feature_selection_preprocessing": {
+    "constant_feature_dropper": { "tol": 1, "missing_values": "include" },
+    "correlated_feature_dropper": {
+      "threshold": 0.98
+    }
+  },
+  "perc_inserted_nulls": 0.05
+}

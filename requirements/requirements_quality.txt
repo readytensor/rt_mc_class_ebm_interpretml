@@ -1,0 +1,5 @@
+flake8==6.0.0
+black==22.6.0
+isort==5.9.3
+safety==2.3.5
+radon==6.0.1

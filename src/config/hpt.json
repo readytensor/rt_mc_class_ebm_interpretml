@@ -1,0 +1,21 @@
+{
+  "num_trials": 10,
+  "hyperparameters": [
+    {
+      "name": "min_samples_leaf",
+      "short_desc": "The minimum number of samples required to be at a leaf node.",
+      "type": "int",
+      "search_type": "uniform",
+      "range_low": 1,
+      "range_high": 10
+    },
+    {
+      "name": "learning_rate",
+      "short_desc": "Learning rate for boosting",
+      "type": "real",
+      "range_low": 1e-5,
+      "range_high": 5e-1,
+      "search_type": "log-uniform"
+    }
+  ]
+}

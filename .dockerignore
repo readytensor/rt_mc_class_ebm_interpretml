@@ -1,0 +1,36 @@
+# Python cache files and directories
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Local data and model artifacts
+model_inputs_outputs/
+
+# Git related files and directories
+.git/
+.gitignore
+
+# Test related files and directories
+tests/
+*.test
+*.pytest_cache
+pytest.ini
+tox.ini
+.tox/
+
+# Documentation related files and directories
+*.md
+
+# Other unnecessary files and folders
+examples/
+tmp/
+LICENSE
