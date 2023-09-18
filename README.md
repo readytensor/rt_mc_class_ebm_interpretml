@@ -1,36 +1,27 @@
-# Explainable Boosting Machine (EBM) Multiclass Classifier with Shapley Explanations
-
+# Explainable Boosting Machine (EBM) Multiclass Classifier in Python using the `InterpretML` library. with Shapley Explanations
 ## Project Description
-
 This repository is a dockerized implementation of the re-usable multiclass classifier model. It is implemented in flexible way so that it can be used with any multiclass classification dataset with the use of CSV-formatted data, and a JSON-formatted data schema file. The main purpose of this repository is to provide a complete example of a machine learning model implementation that is ready for deployment.
 The following are the requirements for using your data with this model:
-
 - The data must be in CSV format.
 - The number of rows must not exceed 20,000. Number of columns must not exceed 200. The model may function with larger datasets, but it has not been performance tested on larger datasets.
 - The number of target classes (labels) must be between 3 and 20.
 - Features must be one of the following two types: NUMERIC or CATEGORICAL. Other data types are not supported. Note that CATEGORICAL type includes boolean type.
 - The train and test (or prediction) files must contain an ID field. The train data must also contain a target field.
 - The data need not be preprocessed because the implementation already contains logic to handle missing values, categorical features, outliers, and scaling.
-
 ---
-
 Here are the highlights of this implementation: <br/>
-
 - A flexible preprocessing pipeline built using **SciKit-Learn** and **feature-engine**. Transformations include missing value imputation, categorical encoding, outlier removal, feature selection, and feature scaling. <br/>
 - A **Explainable Boosting Machine (EBM) Multiclass Classifier** algorithm built using **InterpretML** library.
 - Hyperparameter-tuning using **scikit-optimize**
 - **FASTAPI** inference service for online inferences.
-  Additionally, the implementation contains the following features:
+Additionally, the implementation contains the following features:
 - **Data Validation**: Pydantic data validation is used for the schema, training and test files, as well as the inference request data.
 - **Error handling and logging**: Python's logging module is used for logging and key functions include exception handling.
 - **Testing**: Comprehensive set of unit, integration, coverage and performance tests using **pytest** and **pytest-cov**.
 - **Static code analysis**: Code quality tests are implemented using **flake8**, **black**, **isort**, **safety**, and **radon**.
 - **Test automation**: Tox is used for test automation.
-
 ## Project Structure
-
 The following is the directory structure of the project:
-
 - **`examples/`**: This directory contains example files for a smoke_test dataset. This is a simple (toy) dataset. Three files are included: `smoke_test_schema.json`, `smoke_test_train.csv` and `smoke_test_test.csv`. You can place these files in the `inputs/schema`, `inputs/data/training` and `inputs/data/testing` folders, respectively.
 - **`model_inputs_outputs/`**: This directory contains files that are either inputs to, or outputs from, the model. When running the model locally (i.e. without using docker), this directory is used for model inputs and outputs. This directory is further divided into:
   - **`/inputs/`**: This directory contains all the input files for this project, including the `data` and `schema` files. The `data` is further divided into `testing` and `training` subsets.
@@ -69,30 +60,21 @@ The following is the directory structure of the project:
 - **`pytest.ini`**: This is the configuration file for pytest, the testing framework used in this project.
 - **`README.md`**: This file (this particular document) contains the documentation for the project, explaining how to set it up and use it.
 - **`tox.ini`**: This is the configuration file for tox, the primary test runner used in this project.
-
 ## Usage
-
 In this section we cover the following:
-
 - How to prepare your data for training and inference
 - How to run the model implementation locally (without Docker)
 - How to run the model implementation with Docker
 - How to use the inference service (with or without Docker)
-
 ### Preparing your data
-
 - If you plan to run this model implementation on your own multiclass classification dataset, you will need your training and testing data in a CSV format. Also, you will need to create a schema file as per the Ready Tensor specifications. The schema is in JSON format, and it's easy to create. You can use the example schema file provided in the `examples` directory as a template.
-
 ### To run locally (without Docker)
-
 - Create your virtual environment and install dependencies listed in `requirements.txt` which is inside the `requirements` directory.
 - Move the three example files (`smoke_test_schema.json`, `smoke_test_train.csv` and `smoke_test_test.csv`) in the `examples` directory into the `./model_inputs_outputs/inputs/schema`, `./model_inputs_outputs/inputs/data/training` and `./model_inputs_outputs/inputs/data/testing` folders, respectively (or alternatively, place your custom dataset files in the same locations).
 - Run the script `src/train.py` to train the random forest classifier model. This will save the model artifacts, including the preprocessing pipeline and label encoder, in the path `./model_inputs_outputs/model/artifacts/`. If you want to run with hyperparameter tuning then include the `-t` flag. This will also save the hyperparameter tuning results in the path `./model_inputs_outputs/outputs/hpt_outputs/`.
 - Run the script `src/predict.py` to run batch predictions using the trained model. This script will load the artifacts and create and save the predictions in a file called `predictions.csv` in the path `./model_inputs_outputs/outputs/predictions/`.
 - Run the script `src/serve.py` to start the inference service, which can be queried using the `/ping`, `/infer` and `/explain` endpoints. The service runs on port 8080.
-
 ### To run with Docker
-
 1. Set up a bind mount on host machine: It needs to mirror the structure of the `model_inputs_outputs` directory. Place the train data file in the `model_inputs_outputs/inputs/data/training` directory, the test data file in the `model_inputs_outputs/inputs/data/testing` directory, and the schema file in the `model_inputs_outputs/inputs/schema` directory.
 2. Build the image. You can use the following command: <br/>
    `docker build -t classifier_img .` <br/>
@@ -119,13 +101,9 @@ In this section we cover the following:
 6. To run the inference service, issue the following command on the running container: <br/>
    `docker run -p 8080:8080 -v <path_to_mount_on_host>/model_inputs_outputs:/opt/model_inputs_outputs classifier_img serve` <br/>
    This starts the service on port 8080. You can query the service using the `/ping`, `/infer` and `/explain` endpoints. More information on the requests/responses on the endpoints is provided below.
-
 ### Using the Inference Service
-
 #### Getting Predictions
-
 To get predictions for a single sample, use the following command:
-
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
   {
@@ -138,9 +116,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
     ]
 }' http://localhost:8080/infer
 ```
-
 The key `instances` contains a list of objects, each of which is a sample for which the prediction is requested. The server will respond with a JSON object containing the predicted probabilities for each input record:
-
 ```json
 {
   "status": "success",
@@ -158,11 +134,8 @@ The key `instances` contains a list of objects, each of which is a sample for wh
   ]
 }
 ```
-
 #### Getting predictions and local explanations
-
 To get predictions and explanations for a single sample, use the following request to send to `/explain` endpoint (same structure as data for the `/infer` endpoint):
-
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{
   {
@@ -175,9 +148,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
     ]
 }' http://localhost:8080/explain
 ```
-
 The server will respond with a JSON object containing the predicted probabilities and locations for each input record:
-
 ```json
 {
   "status": "success",
@@ -206,38 +177,25 @@ The server will respond with a JSON object containing the predicted probabilitie
   "explanationMethod": "Shap"
 }
 ```
-
 #### OpenAPI
-
 Since the service is implemented using FastAPI, we get automatic documentation of the APIs offered by the service. Visit the docs at `http://localhost:8080/docs`.
-
 ## Testing
-
 ### Running through Tox
-
 This project uses Tox for running tests. For this, you will need tox installed on your system. You can install tox using pip:
-
 ```bash
 pip install tox
 ```
-
 Once you have tox installed, you can run all tests by simply running the following command from the root of your project directory:
-
 ```bash
 tox
 ```
-
 This will run the tests as well as formatters `black` and `isort` and linter `flake8`. You can run tests corresponding to specific environment, or specific markers. Please check `tox.ini` file for configuration details.
-
 ### Running through Pytest
-
 To run tests using pytest, first create a virtual environment and install the dependencies listed in the following three files located in the `requirements` directory`:
-
 - `requirements.txt`: for main dependencies
 - `requirements_test.txt`: for test dependencies
 - `requirements_quality.txt`: for dependencies related to code quality (formatting, linting, complexity, etc.)
-  Once you have the dependencies installed, you can run the tests using the following command from the root of your project directory:
-
+Once you have the dependencies installed, you can run the tests using the following command from the root of your project directory:
 ```bash
 # Run all tests
 pytest
@@ -248,26 +206,18 @@ pytest <path_to_file>
 # or, to run tests with a specific marker (such as `slow`, or `not slow`)
 pytest -m <marker_name>
 ```
-
 ## Requirements
-
 The requirements files are placed in the folder `requirements`.
 Dependencies for the main model implementation in `src` are listed in the file `requirements.txt`.
 For testing, dependencies are listed in the file `requirements_test.txt`.
 Dependencies for quality-tests are listed in the file `requirements_quality.txt`. You can install these packages by running the following command from the root of your project directory:
-
 ```python
 pip install -r requirements/requirements.txt
 pip install -r requirements/requirements_test.txt
 pip install -r requirements/requirements_quality.txt
 ```
-
 Alternatively, you can let tox handle the installation of test dependencies for you for testing purposes. To do this, simply run the command `tox` from the root directory of the repository. This will create the environments, install dependencies, and run the tests as well as quality checks on the code.
-
 ## LICENSE
-
 This project is provided under the MIT License. Please see the [LICENSE](LICENSE) file for more information.
-
 ## Contact Information
-
 Repository created by Ready Tensor, Inc. (https://www.readytensor.ai/)
