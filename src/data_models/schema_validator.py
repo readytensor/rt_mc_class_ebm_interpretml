@@ -111,6 +111,7 @@ class SchemaModel(BaseModel):
     modelCategory: str
     schemaVersion: float
     inputDataFormat: str = None
+    encoding: str = None
     id: ID
     target: Target
     features: List[Feature]

@@ -58,9 +58,8 @@ class Classifier:
             min_samples_leaf=self.min_samples_leaf,
             learning_rate=self.learning_rate,
             feature_names=self.feature_names,
-            early_stopping_rounds=20,
-            # interactions=0,
             random_state=0,
+            validation_size=0.1
         )
         return model
 
