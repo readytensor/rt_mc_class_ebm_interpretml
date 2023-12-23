@@ -95,7 +95,9 @@ def run_training(
         # split train data into training and validation sets
         logger.info("Performing train/validation split...")
         train_split, val_split = split_train_val(
-            validated_data, val_pct=model_config["validation_split"]
+            data=validated_data,
+            target=data_schema.target,
+            val_pct=model_config["validation_split"]
         )
 
         logger.info("Loading preprocessing config...")
